@@ -1,0 +1,6 @@
+server:
+  port: 8081
+
+azure:
+  storage:
+    blob-storage: "c:\\temp\\file-samples"
