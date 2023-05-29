@@ -1,6 +1,7 @@
 package br.com.danielgarcez.azure.filesampleproducer.domain.service;
 
 import br.com.danielgarcez.azure.filesampleproducer.domain.model.FileSampleProducerParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +11,14 @@ import java.io.IOException;
 @Service
 public class FileSampleProducerService {
 
-    @Value("${azure.storage.blob-storage}")
+    private final BlobStorageService blobStorageService;
+    @Value("${local.output-file-directory}")
     private String path;
+
+    @Autowired
+    public FileSampleProducerService(BlobStorageService blobStorageService) {
+        this.blobStorageService = blobStorageService;
+    }
 
     public void generateFileSamples(FileSampleProducerParam fileSampleProducerParam) throws IOException {
 
@@ -19,8 +26,9 @@ public class FileSampleProducerService {
         for (int index = 0; index < fileSampleProducerParam.getQuantity(); index++) {
             String fileName = getFileName(fileSampleProducerParam.getQuantity(), index);
             content = "A";
-            try (FileOutputStream fileOutputStream = new FileOutputStream(this.path + "\\" + fileName)) {
+            try (FileOutputStream fileOutputStream = new FileOutputStream(this.path + "/" + fileName)) {
                 fileOutputStream.write(content.getBytes());
+                this.blobStorageService.uploadFileToBlobStorage(this.path, fileName);
             }
         }
     }

@@ -1,6 +1,34 @@
 server:
-  port: 8081
+  port: 28081
+
+local:
+  output-file-directory: "/temp/file-sample"
+
+spring:
+  application:
+    name: file-sample-producer
+  main:
+    allow-bean-definition-overriding: true
+
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 azure:
   storage:
-    blob-storage: "c:\\temp\\file-samples"
+    default-endpoints-protocol: "http"
+    account-name: "dg78filesamples"
+    account-key: "****"
+    blob:
+      endpoint: "https://dg78filesamples.blob.core.windows.net"
+      container: "file-sample"
+
+
+

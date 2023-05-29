@@ -32,7 +32,7 @@ public class FileSampleProducerController {
             this.fileSampleProducerService.generateFileSamples(fileSampleProducerParam);
             return ResponseEntity.ok().body(Optional.of("File samples generated successfully"));
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(Optional.of(e.getMessage()));
         }
     }
 }
